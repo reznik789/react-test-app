@@ -22,3 +22,5 @@ yarn-error.log*
 .directory
 .idea
 /draft
+
+server/node_modules
