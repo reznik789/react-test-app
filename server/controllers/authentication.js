@@ -4,8 +4,8 @@ exports.signup = function(req, res, next) {
   const { email, password } = req.body;
 
   if (!email || !password) {
-    res.status(402).send({
-      error: "Not valid action"
+    res.status(422).send({
+      error: "You must provide email and password"
     });
   }
 
@@ -26,7 +26,9 @@ exports.signup = function(req, res, next) {
         if (err) {
             return next(err);
         }
-        res.json(user);
+        res.send({
+          success: true
+        });
     } );
 
   });

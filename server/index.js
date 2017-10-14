@@ -5,11 +5,14 @@ const morgan = require('morgan');
 const app = express();
 const router = require('./router');
 const mongoose = require('mongoose');
+const assert = require("mongoose");
 
 //DB setup
 mongoose.connect('mongodb://localhost:27017', {
     useMongoClient: true
-})
+});
+// Use native promises
+mongoose.Promise = global.Promise;
 
 //App setup
 app.use(morgan('combined'));
