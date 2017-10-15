@@ -26,3 +26,4 @@ yarn-error.log*
 server/node_modules
 
 server/start-mongo-win.txt
+server/config.js

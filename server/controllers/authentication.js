@@ -1,6 +1,12 @@
 const User = require("../models/user");
+const jwt = require("jwt-simple");
+const config = require("../config");
 
-exports.signup = function(req, res, next) {
+function tokenForUser(user) {
+  return jwt.encode({ sub: user.id }, config.secret);
+};
+
+exports.signup = function (req, res, next) {
   const { email, password } = req.body;
 
   if (!email || !password) {
@@ -9,7 +15,7 @@ exports.signup = function(req, res, next) {
     });
   }
 
-  User.findOne({ email: email }, function(err, existingUser) {
+  User.findOne({ email: email }, function (err, existingUser) {
     if (err) {
       return next(err);
     }
@@ -19,17 +25,17 @@ exports.signup = function(req, res, next) {
       });
     }
     const user = new User({
-        email: email,
-        password: password
+      email: email,
+      password: password
     });
-    user.save( function( err ) {
-        if (err) {
-            return next(err);
-        }
-        res.send({
-          success: true
-        });
-    } );
+    user.save(function (err) {
+      if (err) {
+        return next(err);
+      }
+      res.send({
+        success: true
+      });
+    });
 
   });
 };
