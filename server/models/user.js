@@ -3,7 +3,7 @@ const Schema = mongoos.Schema;
 const bcrypt = require('bcrypt-nodejs');
 
 //Define our module
-const userSchema = new Schema({
+let userSchema = new Schema({
     email: {
         type: String,
         unique: true,
@@ -12,14 +12,13 @@ const userSchema = new Schema({
     password: String
 });
 
-//todo: fix hashing
-userSchema.pre('save', (next) => {
-    const user = this;
-    bcrypt.genSalt(10, (err, salt) => {
+userSchema.pre('save', function (next) {
+    let user = this;
+    bcrypt.genSalt(10, function (err, salt) {
         if (err) {
             return next(err);
         }
-        bcrypt.hash(user.passwors, salt, null, (err, hash) => {
+        bcrypt.hash(user.password, salt, null, function (err, hash) {
             if (err) { return next(err) };
             user.password = hash;
             console.log(hash);
