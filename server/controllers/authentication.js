@@ -34,9 +34,29 @@ exports.signup = function (req, res, next) {
         return next(err);
       }
       res.send({
+        success: true,
         token: tokenForUser(user)
       });
     });
 
   });
 };
+
+exports.signin = function (req, res, next) {
+  User.findOne({ email: req.email }, function (err, user) {
+    res.send({
+      success: true,
+      token: tokenForUser(req.user)
+    })
+    // if (err) { return next(err); }
+    // if (!user) {
+    //   res.status(422).send({ error: true });
+    // }
+    // if(user){
+    //   res.send({
+    //     sucess:true,
+    //     token: tokenForUser(user)
+    //   });
+    // }
+  });
+}
