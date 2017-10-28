@@ -5,9 +5,9 @@ const config = require("../config");
 function tokenForUser(user) {
   const timestamp = new Date().getTime();
   return jwt.encode({ sub: user.id, iat: timestamp }, config.secret);
-};
+}
 
-exports.signup = function (req, res, next) {
+exports.signup = function(req, res, next) {
   const { email, password } = req.body;
 
   if (!email || !password) {
@@ -16,7 +16,7 @@ exports.signup = function (req, res, next) {
     });
   }
 
-  User.findOne({ email: email }, function (err, existingUser) {
+  User.findOne({ email: email }, function(err, existingUser) {
     if (err) {
       return next(err);
     }
@@ -29,7 +29,7 @@ exports.signup = function (req, res, next) {
       email: email,
       password: password
     });
-    user.save(function (err) {
+    user.save(function(err) {
       if (err) {
         return next(err);
       }
@@ -38,25 +38,14 @@ exports.signup = function (req, res, next) {
         token: tokenForUser(user)
       });
     });
-
   });
 };
 
-exports.signin = function (req, res, next) {
-  User.findOne({ email: req.email }, function (err, user) {
+exports.signin = function(req, res, next) {
+  User.findOne({ email: req.email }, function(err, user) {
     res.send({
       success: true,
       token: tokenForUser(req.user)
-    })
-    // if (err) { return next(err); }
-    // if (!user) {
-    //   res.status(422).send({ error: true });
-    // }
-    // if(user){
-    //   res.send({
-    //     sucess:true,
-    //     token: tokenForUser(user)
-    //   });
-    // }
+    });
   });
-}
+};

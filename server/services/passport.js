@@ -6,32 +6,44 @@ const ExtractJwt = require("passport-jwt").ExtractJwt;
 const LocalStrategy = require("passport-local");
 
 //Setup local strategy
-const localOptions = { usernameField: 'email' };
-const localLogin = new LocalStrategy(localOptions, function (email, password, done) {
+const localOptions = { usernameField: "email" };
+const localLogin = new LocalStrategy(localOptions, function(
+  email,
+  password,
+  done
+) {
   //verify username and pass
-  User.findOne({ email: email }, function (err, user) {
-    if (err) { return done(err) };
-    if (!user) { return done(null, false); }
+  User.findOne({ email: email }, function(err, user) {
+    if (err) {
+      return done(err);
+    }
+    if (!user) {
+      return done(null, false);
+    }
 
-    user.comparePassword(password, function (err, isMatch) {
-      if (err) { return done(err) };
-      if (!isMatch) { return done(null, false); }
+    user.comparePassword(password, function(err, isMatch) {
+      if (err) {
+        return done(err);
+      }
+      if (!isMatch) {
+        return done(null, false);
+      }
 
       return done(null, user);
-    })
+    });
   });
 });
 
 //Setup options
 const jwtOptions = {
-  jwtFromRequest: ExtractJwt.fromHeader('authorization'),
+  jwtFromRequest: ExtractJwt.fromHeader("authorization"),
   secretOrKey: config.secret
 };
 
 //Create a jwt strategy
-const jwtLogin = new JwtStrategy(jwtOptions, function (payload, done) {
+const jwtLogin = new JwtStrategy(jwtOptions, function(payload, done) {
   console.log(payload);
-  user.findById(payload.sub, function (error, user) {
+  User.findById(payload.sub, function(error, user) {
     if (error) {
       return done(error, false);
     }
